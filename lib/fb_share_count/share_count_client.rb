@@ -23,11 +23,14 @@ module FbShareCount
         response = HTTParty.get base_url,
                                 query: { ids: ids }
         JSON.parse response.body.to_s, symbolize_names: true
+      rescue => e
+        NewRelic::Agent.notice_error e
+        nil
       end
 
       def parse_response(response, url_group)
         url_group.each_with_object({}) do |url, url_info|
-          info = response[url.to_sym]
+          info = response ? response[url.to_sym] : nil
           url_info[url] = get_share_info info
         end
       end
