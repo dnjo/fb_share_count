@@ -1,0 +1,3 @@
+module FbShareCount
+  VERSION = "0.1.0"
+end
