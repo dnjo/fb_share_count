@@ -24,7 +24,7 @@ module FbShareCount
                                 query: { ids: ids }
         JSON.parse response.body.to_s, symbolize_names: true
       rescue => e
-        NewRelic::Agent.notice_error e
+        FbShareCount.handle_error e
         nil
       end
 

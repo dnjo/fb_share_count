@@ -20,6 +20,14 @@ describe FbShareCount::ShareCountClient do
       expect(share_info[url]).to eq body[url][:share]
     end
 
+    it 'handles errors' do
+      expect(HTTParty)
+        .to(receive(:get))
+        .and_raise 'error'
+      expect(FbShareCount).to receive :handle_error
+      FbShareCount::ShareCountClient.call %w(testurl)
+    end
+
     it 'splits requests when too many URLs are requested' do
       request_url = 'http://graph.facebook.com/?ids='
       request1_urls = (1..50).map { |i| "url#{i}" }
