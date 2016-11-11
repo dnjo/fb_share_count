@@ -5,6 +5,7 @@ module FbShareCount
   class << self
     attr_accessor :cache_store,
                   :cache_expire_time
+    attr_writer :logger
 
     def configure
       yield self
@@ -15,6 +16,13 @@ module FbShareCount
     rescue => e
       handle_error e
       nil
+    end
+
+    def logger
+      return @logger if @logger
+      @logger = Logger.new
+      @logger.level = Logger::WARN
+      @logger
     end
 
     def handle_errors(&block)
