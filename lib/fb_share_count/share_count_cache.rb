@@ -19,6 +19,7 @@ module FbShareCount
 
       def fetch_and_store(cached_info)
         uncached_urls = get_uncached_urls cached_info
+        FbShareCount.logger.info { "Requesting uncached share count for URLs: #{uncached_urls}" } if uncached_urls.any?
         info = ShareCountClient.call uncached_urls
         store_info info
         cached_info.merge info

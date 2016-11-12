@@ -20,9 +20,12 @@ module FbShareCount
 
       def request_urls(urls)
         ids = urls.join ','
+        FbShareCount.logger.info { "Requesting share count for URLs: #{ids}" }
         response = HTTParty.get base_url,
                                 query: { ids: ids }
-        JSON.parse response.body.to_s, symbolize_names: true
+        body = response.body.to_s
+        FbShareCount.logger.info { "Share count response: #{body}" }
+        JSON.parse body, symbolize_names: true
       rescue => e
         FbShareCount.handle_error e
         nil
